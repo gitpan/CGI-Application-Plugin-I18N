@@ -23,10 +23,10 @@ following default are used:-
 
     %DEFAULT_OPTIONS = (
         Path        => "$RealBin/I18N",
-        Style        => 'gettext',
-        Export        => '_maketext',
-        Decode        => 1,
-        Encoding    => 'locale',
+        Style       => 'gettext',
+        Export      => '_maketext',
+        Decode      => 1,
+        Encoding    => '',
     );
 
 $RealBin being the folder from which the executed cgi script is running.
@@ -108,17 +108,34 @@ Think of it as a kind of hash. Where the text you use (usually english) has a
 corrosponding value in the local language. So the 'Hello world' under a German
 lexicon would have the value 'Hallo welt'.
 
+=head2 Is there some sort of guide?
+
+Yes I've written one. L<CGI::Application::Plugin::I18N::Guide>
+See Guide.pod which is part of this distribution. It'll walk you through what
+you need to know, and how to make your lexicons.
+
 =head1 Thanks to:-
 
-C<Catalyst::Plugin::I18N> - The module this one was heavily based on
+L<Catalyst::Plugin::I18N> - The module this one was heavily based on
 
-C<Locale::Maketext::Simple> - Making it possible
+L<Locale::Maketext::Simple> - Making it possible
 
-C<Locate::Maketext> - Doing all the hard work
+L<Locate::Maketext> - Doing all the hard work
 
-C<CGI::Application> - Providing the framework
+L<CGI::Application> - Providing the framework
 
 And all others I haven't yet mentioned.
+
+=head1 Come join the bestest Perl group in the World!
+
+Bristol and Bath Perl moungers is renound for being the friendliest Perl group
+in the world. You don't have to be from the UK to join, everyone is welcome on
+the list:-
+L<http://perl.bristolbath.org>
+
+=head1 AUTHOR
+
+Lyle Hopkins ;)
 
 =cut
 
@@ -152,14 +169,14 @@ require Exporter;
     i18n_config
 );
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 
 %DEFAULT_OPTIONS = (
     Path        => "$RealBin/I18N",
     Style       => 'gettext',
     Export      => '_maketext',
     Decode      => 1,
-    Encoding    => 'locale',
+    Encoding    => '', # When set to locale, .po and .mo files that include a Content-Type cause the software to die?
 );
 
 
