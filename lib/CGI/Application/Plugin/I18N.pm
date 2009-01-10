@@ -7,7 +7,10 @@ CGI::Application::Plugin::I18N - I18N and L10N methods for CGI::App
 
 =head1 SYNOPSIS
 
-    use CGI::Application::Plugin::I18N;
+Nothing is exported by default. You can specify a list of individual methods or
+use one of the groups :std, :max or :min.
+
+    use CGI::Application::Plugin::I18N qw( :std );
 
 Within your setup, cgiapp_init, cgiapp_prerun or specific runmode routine add
 the line
@@ -94,6 +97,28 @@ This is the method that actually does the work.
 
     print $self->localtext( 'Hello World!' );
 
+=head2 loc
+
+You can choose to import a shorter method called C<loc> that works the same way
+as C<localtext>. You need to specify this when you use the module:-
+
+    use CGI::Application::Plugin::I18N qw( loc );
+    print $self->loc( 'Hello World!' );
+
+=head2 Export groups
+
+:max exports:-
+
+    i18n_config localtext_langs localtext_lang localtext_lang_tag localtext loc
+
+:std exports:-
+
+    i18n_config localtext_langs localtext_lang localtext_lang_tag localtext
+
+:min exports:-
+
+    i18n_config localtext
+
 =head1 FAQ
 
 =head2 How does it all work?
@@ -152,24 +177,29 @@ use I18N::LangTags::Detect;
 
 require Locale::Maketext::Simple;
 
-use vars qw ( $VERSION @ISA @EXPORT @EXPORT_OK $RealBin %DEFAULT_OPTIONS );
+use vars qw ( $VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $RealBin %DEFAULT_OPTIONS );
 
 require Exporter;
 @ISA = qw(Exporter);
 
-@EXPORT = qw (
+@EXPORT = ();
+
+@EXPORT_OK = qw(
     i18n_config
     localtext_langs
     localtext_lang
     localtext_lang_tag
     localtext
+    loc
 );
 
-@EXPORT_OK = qw(
-    i18n_config
+%EXPORT_TAGS = (
+    all => [ qw(i18n_config localtext_langs localtext_lang localtext_lang_tag localtext loc) ],
+    std => [ qw(i18n_config localtext_langs localtext_lang localtext_lang_tag localtext) ],
+    min => [ qw(i18n_config localtext) ],
 );
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 
 %DEFAULT_OPTIONS = (
     Path        => "$RealBin/I18N",
@@ -259,6 +289,10 @@ sub localtext {
     no strict 'refs';
     return &{ ref($self) . '::_maketext' }( $_[0], @{ $_[1] } ) if ( ref $_[1] eq 'ARRAY' );
     return &{ ref($self) . '::_maketext' }(@_);
+}#sub
+
+sub loc {
+    &localtext;
 }#sub
 
 
